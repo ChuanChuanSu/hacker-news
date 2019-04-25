@@ -1,0 +1,19 @@
+section.comment-body {
+  padding-left: 5vw;
+  header.comment-mes {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    .mes-time {
+      color: #aaa;
+    }
+  }
+  article.comment-content {
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+    a {
+      text-decoration: none;
+      color: gray;
+    }
+  }
+}

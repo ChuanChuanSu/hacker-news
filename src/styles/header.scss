@@ -1,0 +1,16 @@
+header.news-header {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 5vw;
+  background-color: #ee7e3e;
+  .header-left {
+    width: 112px;
+  }
+  .header-right {
+    width: 225px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}

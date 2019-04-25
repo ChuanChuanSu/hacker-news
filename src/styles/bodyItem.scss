@@ -1,0 +1,26 @@
+.news-body-item {
+  margin-bottom: 4px;
+  
+  .first-line {
+    font-size: 14px;
+
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+    a:hover {
+      color: green;
+    }
+  }
+  
+  .second-line {
+    padding-left: 20px;
+    font-size: 10px;
+    color: gray;
+    .comment {
+      text-decoration: none;
+      color: gray;
+    }
+  }
+}
+
