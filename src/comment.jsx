@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import CommentItem from './component/commentItem';
+import hackerNews from 'hacker-news-jsdk-prototype';
+
 import './styles/comment.scss';
 
 export class Comment extends React.Component {
@@ -16,7 +17,7 @@ export class Comment extends React.Component {
 
   componentDidMount() {
     const { storyId } = this.state;
-    axios.get(`http://node-hnapi.herokuapp.com/item/${storyId}`)
+    hackerNews.getComments(storyId)
       .then(res => {
         this.setState({
           storyTitle: res.data.title,

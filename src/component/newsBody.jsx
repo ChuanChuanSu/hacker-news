@@ -1,9 +1,13 @@
 import React from 'react';
-import { NewsBodyItem } from './newsBodyItem'
-import axios from 'axios'
+import { NewsBodyItem } from './newsBodyItem';
+import hackerNews from 'hacker-news-jsdk-class';
 
 import '../styles/body.scss'
 
+
+hackerNews.getList('new').then((res) => {
+  console.log(res);
+});
 
 export class NewsBody extends React.Component {
   constructor(props) {
@@ -39,7 +43,7 @@ export class NewsBody extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty')
+    hackerNews.getList('new')
       .then(res => {
         this.setState({
           newStoryIds: res.data,
@@ -54,7 +58,7 @@ export class NewsBody extends React.Component {
 
         let promiseArr = [];
         for (let i = 0; i < 30; i++) {
-          promiseArr.push(axios.get('https://hacker-news.firebaseio.com/v0/item/' + res.data[i] + '.json?print=pretty'))
+          promiseArr.push(hackerNews.getItem(res.data[i]));
         }
 
         let arr = Promise.all(promiseArr)
@@ -88,7 +92,7 @@ export class NewsBody extends React.Component {
         })
       }
       else {
-        axios.get(`https://hacker-news.firebaseio.com/v0/${nextProps.currentType}stories.json?print=pretty`)
+        hackerNews.getList(nextProps.currentType)
           .then(res => {
             let { totalPages } = this.state;
             totalPages[nextProps.currentType] = Math.ceil(res.data.length / 30);
@@ -98,7 +102,7 @@ export class NewsBody extends React.Component {
             });
             let promiseArr = [];
             for (let i = 0; i < 30; i++) {
-              promiseArr.push(axios.get('https://hacker-news.firebaseio.com/v0/item/' + res.data[i] + '.json?print=pretty'))
+              promiseArr.push(hackerNews.getItem(res.data[i]));
             }
             let arr = Promise.all(promiseArr);
             arr.then(res => {
@@ -121,7 +125,7 @@ export class NewsBody extends React.Component {
     let currentIds = this.state[currentType + 'StoryIds'];
     let currentStories = this.state[currentType + 'Stories'];
     
-    if (x === -1 && currentIndex[currentType] > 0 || x === 1 && currentIndex[currentType] < totalPages[currentType] - 1) {
+    if ((x === -1 && currentIndex[currentType] > 0) || (x === 1 && currentIndex[currentType] < totalPages[currentType] - 1)) {
       currentIndex[currentType] = currentIndex[currentType] + x;
       this.setState({
         currentIndex
@@ -138,7 +142,7 @@ export class NewsBody extends React.Component {
       } else {
         let promiseArr = [];
         for (let i = index * 30; i < endIndex; i++) {
-          promiseArr.push(axios.get('https://hacker-news.firebaseio.com/v0/item/' + currentIds[i] + '.json?print=pretty'))
+          promiseArr.push(hackerNews.getItem(currentIds[i]));
         }
         let arr = Promise.all(promiseArr);
         arr.then(res => {
@@ -164,13 +168,15 @@ export class NewsBody extends React.Component {
           <div className='page-forward' onClick={ () => { this.pageJump(1) }}>&gt;pre</div>
         </div>
         {
-          currentData.map((data, index) =>
-            <NewsBodyItem
-              key={data.id}
-              index={currentIndex[currentType] * 30 + index}
-              data={data}
-            />
-          )
+          currentData.map((data, index) => {
+            return data ? (
+              <NewsBodyItem
+                key={data.id}
+                index={currentIndex[currentType] * 30 + index}
+                data={data}
+              />
+            ) : null;
+          })
         }
       </div>
     )

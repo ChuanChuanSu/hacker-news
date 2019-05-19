@@ -17,7 +17,7 @@ export class NewsHeader extends React.Component {
 
   render() {
     return (
-      <header class='news-header'>
+      <header className='news-header'>
         <span className='header-left'>
           <b>Hacker News</b>
         </span>
